@@ -9,7 +9,7 @@ namespace StudentCrud.Domain.Services.Implementations
 {
     public class AddressService : IAddressService
     {
-        IAddressRepository addressRepository = new AddressRepository();
+        private readonly IAddressRepository addressRepository = new AddressRepository();
 
         public ResultTrack Add(Address entity)
         {
