@@ -2,7 +2,6 @@
 using StudentCrud.Domain.Model.DatabaseModels;
 using StudentCrud.Domain.Model.Repositories.Actions;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace StudentCrud.Domain.Model.Repositories
 {

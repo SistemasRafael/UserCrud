@@ -42,12 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ResultTrack.cs" />
+    <Compile Include="DatabaseModels\Address.cs" />
     <Compile Include="DatabaseModels\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Actions\IAddRepository.cs" />
     <Compile Include="Repositories\Actions\IDeleteRepository.cs" />
     <Compile Include="Repositories\Actions\IReadRepository.cs" />
     <Compile Include="Repositories\Actions\IUpdateRepository.cs" />
+    <Compile Include="Repositories\IAddressRepository.cs" />
     <Compile Include="Repositories\IStudentRepository.cs" />
   </ItemGroup>
   <ItemGroup />
