@@ -9,7 +9,7 @@ namespace StudentCrud.Domain.Services.Implementations
 {
     public class StudentService : IStudentService
     {
-        IStudentRepository studentRepository = new StudentRepository();
+        private readonly IStudentRepository studentRepository = new StudentRepository();
 
         public ResultTrack Add(Student entity)
         {

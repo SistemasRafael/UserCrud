@@ -11,17 +11,56 @@ namespace StudentCrud
     {
         private readonly IStudentService studentService = null;
         private readonly IAddressService addressService = null;
+        private readonly IEmailService emailService = null;
 
         public _Default()
         {
             studentService = new StudentService();
             addressService = new AddressService();
+            emailService = new EmailService();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             var id = Student();
             Address(id);
+            Email(id);
+        }
+
+        private void Email(int student_Id)
+        {
+            string email_NameCopy = string.Empty;
+            var emails = emailService.GetAll().ToList();
+            if (emails.Count == 0)
+            {
+                email_NameCopy = (string)emailService.Add(new Email()
+                {
+                    Student_Id = student_Id,
+                    Email_Name = "testAddress@test.com",
+                    Email_Type = 1
+                }).Output;
+            }
+            else
+            {
+                email_NameCopy = emails[0].Email_Name;
+            }
+
+            var email = emailService.GetBy(email_NameCopy);
+            var resultTrack = emailService.Delete(email);
+            var areThereaddresses = emailService.GetAll().ToList();
+            var existEmail = emailService.GetBy(email.Email_Name);
+            var addressId = emailService.Add(new Email()
+            {
+                Student_Id = student_Id,
+                Email_Name = "testAddressCopy@test.com",
+                Email_Type = 1
+            });
+
+            var updateEmail = emailService.GetBy((string)addressId.Output);
+            updateEmail.Email_Name = "testAddressCopy@test.com";
+            updateEmail.Email_Type = 2;
+
+            var email_NameUpdate = emailService.Update(updateEmail);
         }
 
         private void Address(int student_Id)
