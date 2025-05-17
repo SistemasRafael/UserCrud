@@ -3,7 +3,6 @@ using StudentCrud.Domain.Model.DatabaseModels;
 using StudentCrud.Domain.Model.Repositories;
 using StudentCrud.Domain.Services.Contracts;
 using StudentCrud.Infrastucture.Database;
-using System;
 using System.Collections.Generic;
 
 namespace StudentCrud.Domain.Services.Implementations
