@@ -12,19 +12,63 @@ namespace StudentCrud
         private readonly IStudentService studentService = null;
         private readonly IAddressService addressService = null;
         private readonly IEmailService emailService = null;
+        private readonly IPhoneService phoneService = null;
 
         public _Default()
         {
             studentService = new StudentService();
             addressService = new AddressService();
             emailService = new EmailService();
+            phoneService = new PhoneService();
         }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            var id = Student();
-            Address(id);
-            Email(id);
+            //var student_Id = Student();
+            //Address(student_Id);
+            //Email(student_Id);
+            //Phone(student_Id);
+        }
+
+        private void Phone(int student_Id)
+        {
+            int phoneIdCopy = 0;
+            var phones = phoneService.GetAll().ToList();
+            if (phones.Count == 0)
+            {
+                phoneIdCopy = (int)phoneService.Add(new Phone()
+                {
+                    Student_Id = student_Id,
+                    Phone_Number = "12345678",
+                    Phone_Type = 1,
+                    Country_Code = "12345",
+                    Area_Code = "54321"
+                }).Output;
+            }
+            else
+            {
+                phoneIdCopy = phones[0].Phone_Id;
+            }
+            var phone = phoneService.GetBy(phoneIdCopy);
+            var resultTrack = phoneService.Delete(phone);
+            var areTherePhones = phoneService.GetAll().ToList();
+            var existPhone = phoneService.GetBy(phone.Phone_Id);
+            var phoneId = phoneService.Add(new Phone()
+            {
+                Student_Id = student_Id,
+                Phone_Number = "12345678",
+                Phone_Type = 2,
+                Country_Code = "123",
+                Area_Code = "321"
+            });
+
+            var updatePhone = phoneService.GetBy((int)phoneId.Output);
+            updatePhone.Phone_Number = "123434235";
+            updatePhone.Phone_Type = 1;
+            updatePhone.Country_Code = "12312";
+            updatePhone.Area_Code = "32134";
+
+            var phoneUpdateId = phoneService.Update(updatePhone);
         }
 
         private void Email(int student_Id)
