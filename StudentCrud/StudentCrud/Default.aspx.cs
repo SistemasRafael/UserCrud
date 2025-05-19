@@ -1,192 +1,114 @@
-﻿using StudentCrud.Domain.Model.DatabaseModels;
-using StudentCrud.Domain.Services.Contracts;
-using StudentCrud.Domain.Services.Implementations;
+﻿using StudentCrud.Domain.Services.Implementations;
+using StudentCrud.Extensions;
+using StudentCrud.Models;
 using System;
-using System.Linq;
+using System.Web.Services;
 using System.Web.UI;
 
 namespace StudentCrud
 {
     public partial class _Default : Page
     {
-        private readonly IStudentService studentService = null;
-        private readonly IAddressService addressService = null;
-        private readonly IEmailService emailService = null;
-        private readonly IPhoneService phoneService = null;
-
-        public _Default()
+        protected void Page_LoadComplete()
         {
-            studentService = new StudentService();
-            addressService = new AddressService();
-            emailService = new EmailService();
-            phoneService = new PhoneService();
+            string myScript2 = "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/StudentService.js\"></script>";
+            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/AddressService.js\"></script>";
+            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/EmailService.js\"></script>";
+            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/PhoneService.js\"></script>";
+            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/Student.js\"></script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "myKey", myScript2, false);
         }
 
-        protected void Page_Load(object sender, EventArgs e)
+        [WebMethod]
+        public static string AddStudent(StudentAddParameters student)
         {
-            //var student_Id = Student();
-            //Address(student_Id);
-            //Email(student_Id);
-            //Phone(student_Id);
+            var studentService = new StudentService();
+            var _student = student.MapToModel();
+            
+            var resultTrack = studentService.Add(_student);
+            if (!resultTrack.HasError)
+            {
+                return resultTrack.Output.ToString();
+            }
+            else if (resultTrack.HasSQLError)
+            {
+                return resultTrack.Message;
+            }
+            else if (resultTrack.HasError)
+            {
+                return resultTrack.Message;
+            }
+
+            return "Status 400 Bad Request";
         }
 
-        private void Phone(int student_Id)
+        [WebMethod]
+        public static object AddAddress(AddressAddParameters address)
         {
-            int phoneIdCopy = 0;
-            var phones = phoneService.GetAll().ToList();
-            if (phones.Count == 0)
-            {
-                phoneIdCopy = (int)phoneService.Add(new Phone()
-                {
-                    Student_Id = student_Id,
-                    Phone_Number = "12345678",
-                    Phone_Type = 1,
-                    Country_Code = "12345",
-                    Area_Code = "54321"
-                }).Output;
-            }
-            else
-            {
-                phoneIdCopy = phones[0].Phone_Id;
-            }
-            var phone = phoneService.GetBy(phoneIdCopy);
-            var resultTrack = phoneService.Delete(phone);
-            var areTherePhones = phoneService.GetAll().ToList();
-            var existPhone = phoneService.GetBy(phone.Phone_Id);
-            var phoneId = phoneService.Add(new Phone()
-            {
-                Student_Id = student_Id,
-                Phone_Number = "12345678",
-                Phone_Type = 2,
-                Country_Code = "123",
-                Area_Code = "321"
-            });
+            var addressService = new AddressService();
+            var _address = address.MapToModel();
 
-            var updatePhone = phoneService.GetBy((int)phoneId.Output);
-            updatePhone.Phone_Number = "123434235";
-            updatePhone.Phone_Type = 1;
-            updatePhone.Country_Code = "12312";
-            updatePhone.Area_Code = "32134";
+            var resultTrack = addressService.Add(_address);
+            if (!resultTrack.HasError)
+            {
+                return resultTrack.Output.ToString();
+            }
+            else if (resultTrack.HasSQLError)
+            {
+                return resultTrack.Message;
+            }
+            else if (resultTrack.HasError)
+            {
+                return resultTrack.Message;
+            }
 
-            var phoneUpdateId = phoneService.Update(updatePhone);
+            return "Status 400 Bad Request";
         }
 
-        private void Email(int student_Id)
+        [WebMethod]
+        public static object AddEmail(EmailAddParameters email)
         {
-            string email_NameCopy = string.Empty;
-            var emails = emailService.GetAll().ToList();
-            if (emails.Count == 0)
+            var emailService = new EmailService();
+            var _email = email.MapToModel();
+
+            var resultTrack = emailService.Add(_email);
+            if (!resultTrack.HasError)
             {
-                email_NameCopy = (string)emailService.Add(new Email()
-                {
-                    Student_Id = student_Id,
-                    Email_Name = "testAddress@test.com",
-                    Email_Type = 1
-                }).Output;
+                return resultTrack.Output.ToString();
             }
-            else
+            else if (resultTrack.HasSQLError)
             {
-                email_NameCopy = emails[0].Email_Name;
+                return resultTrack.Message;
+            }
+            else if (resultTrack.HasError)
+            {
+                return resultTrack.Message;
             }
 
-            var email = emailService.GetBy(email_NameCopy);
-            var resultTrack = emailService.Delete(email);
-            var areThereaddresses = emailService.GetAll().ToList();
-            var existEmail = emailService.GetBy(email.Email_Name);
-            var addressId = emailService.Add(new Email()
-            {
-                Student_Id = student_Id,
-                Email_Name = "testAddressCopy@test.com",
-                Email_Type = 1
-            });
-
-            var updateEmail = emailService.GetBy((string)addressId.Output);
-            updateEmail.Email_Name = "testAddressCopy@test.com";
-            updateEmail.Email_Type = 2;
-
-            var email_NameUpdate = emailService.Update(updateEmail);
+            return "Status 400 Bad Request";
         }
 
-        private void Address(int student_Id)
+        [WebMethod]
+        public static object AddPhone(PhoneAddParameters phone)
         {
-            int addressIdCopy = 0;
-            var addresses = addressService.GetAll().ToList();
-            if (addresses.Count == 0)
+            var phoneService = new PhoneService();
+            var _phone = phone.MapToModel();
+
+            var resultTrack = phoneService.Add(_phone);
+            if (!resultTrack.HasError)
             {
-                addressIdCopy = (int)addressService.Add(new Address()
-                {
-                    Student_Id = student_Id,
-                    Address_Line = "testAddress",
-                    City = "testCity",
-                    Zip_Codepost = "testZip_Codepost",
-                    State = "testState"
-                }).Output;
+                return resultTrack.Output.ToString();
             }
-            else
+            else if (resultTrack.HasSQLError)
             {
-                addressIdCopy = addresses[0].Address_Id;
+                return resultTrack.Message;
             }
-            var address = addressService.GetBy(addressIdCopy);
-            var resultTrack = addressService.Delete(address);
-            var areThereaddresses = addressService.GetAll().ToList();
-            var existAddress = addressService.GetBy(address.Address_Id);
-            var addressId = addressService.Add(new Address()
+            else if (resultTrack.HasError)
             {
-                Student_Id = student_Id,
-                Address_Line = "testAddressCopy",
-                City = "testCityCopy",
-                Zip_Codepost = "testZip_CodepostCopy",
-                State = "testStateCopy"
-            });
-
-            var updateAddress = addressService.GetBy((int)addressId.Output);
-            updateAddress.Address_Line = "testAddressCopy2";
-            updateAddress.City = "testCityCopy2";
-            updateAddress.Zip_Codepost = "testZip_CodepostCopy2";
-            updateAddress.State = "testStateCopy2";
-
-            var addressUpdateId = addressService.Update(updateAddress);
-        }
-
-        private int Student()
-        {
-            int studentIdCopy = 0;
-            var students = studentService.GetAll().ToList();
-            if (students.Count == 0)
-            {
-                studentIdCopy = (int)studentService.Add(new Student()
-                {
-                    Last_Name = "Maldonado1",
-                    Middle_Name = "Flores1",
-                    First_Name = "Leonardo1",
-                    Gender = 1
-                }).Output;
+                return resultTrack.Message;
             }
-            else
-            {
-                studentIdCopy = students[0].Student_Id;
-            }
-            var student = studentService.GetBy(studentIdCopy);
-            var resultTrack = studentService.Delete(student);
-            var areThereStudents = studentService.GetAll().ToList();
-            var existStudent = studentService.GetBy(student.Student_Id);
-            var studentId = studentService.Add(new Student()
-            {
-                Last_Name = "Maldonado",
-                Middle_Name = "Flores",
-                First_Name = "Leonardo",
-                Gender = 1
-            });
 
-            var updateStudent = studentService.GetBy((int)studentId.Output);
-            updateStudent.Last_Name = "Maldonado";
-            updateStudent.Middle_Name = "Durazo";
-            updateStudent.First_Name = "Milagros";
-            updateStudent.Gender = 2;
-
-            var studentUpdateId = studentService.Update(updateStudent);
-
-            return (int)studentUpdateId.Output;
+            return "Status 400 Bad Request";
         }
     }
 }
