@@ -12,5 +12,6 @@ namespace StudentCrud.Domain.Model.Repositories
     {
         IEnumerable<Email> GetAll();
         Email GetBy(string email_Name);
+        Email GetByStudentId(int student_Id);
     }
 }

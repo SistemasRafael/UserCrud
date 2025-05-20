@@ -12,6 +12,16 @@ select,
 textarea {
     max-width: 280px;
 }*/
+.table-content {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.table-body {
+    display: table;
+    width: 100%;
+}
 
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {

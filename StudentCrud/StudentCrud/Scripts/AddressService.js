@@ -3,12 +3,12 @@ class AddressService {
     addAddress(data, success, error) {
         $.ajax({
             type: "POST",
-            url: "/Default.aspx/AddAddress",
+            url: "/AddStudent.aspx/Add_Address",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (result) {
-                if (success !== undefined) {
+                if (success !== undefined) { 
                     success(result);
                 }
             },

@@ -156,6 +156,40 @@ namespace StudentCrud.Infrastucture.Database
             return emails.FirstOrDefault();
         }
 
+        public Email GetByStudentId(int student_Id)
+        {
+            var emails = new List<Email>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[dbo].[spGetEmailByStudentId]";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            emails.Add(new Email()
+                            {
+                                Email_Name = GetValue(reader["Email_Name"]),
+                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                Email_Type = int.Parse(GetValue(reader["Email_Type"])),
+                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                            });
+                        }
+                    }
+                }
+            }
+
+            return emails.FirstOrDefault();
+        }
+
         public ResultTrack Update(Email entity)
         {
             try

@@ -49,6 +49,39 @@ const getValuesFromForm = function () {
     }
 }
 
+function validateEmail(email) {
+    var regex = /^[\w.-]+@[\w.-]+\.\w+$/;
+    return regex.test(email);
+}
+
+$inputEmail.keypress(function () {
+    var email = $(this).val();
+    console.log(email);
+    if (validateEmail(email)) {
+        $(this).removeClass("is-invalid");
+    } else {
+        $(this).addClass("is-invalid");
+    }
+});
+
+$inputCountryCode.keypress(function () {
+    if ($(this).val().length > 4) {
+        return false;
+    }
+    else {
+        return true;
+    }
+});
+
+$inputAreaCode.keypress(function () {
+    if ($(this).val().length > 4) {
+        return false;
+    }
+    else {
+        return true;
+    }
+});
+
 $buttonSave.on("click", function () {
     const data = getValuesFromForm();
     studentService.addStudent({ student : data.student }, function (result) {

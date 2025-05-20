@@ -31,6 +31,11 @@ namespace StudentCrud.Domain.Services.Implementations
             return emailRepository.GetBy(email_Name);
         }
 
+        public Email GetByStudentId(int student_Id)
+        {
+            return emailRepository.GetByStudentId(student_Id);
+        }
+
         public ResultTrack Update(Email entity)
         {
             return emailRepository.Update(entity);

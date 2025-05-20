@@ -31,6 +31,11 @@ namespace StudentCrud.Domain.Services.Implementations
             return phoneRepository.GetBy(phone_Id);
         }
 
+        public Phone GetByStudentId(int student_Id)
+        {
+            return phoneRepository.GetByStudentId(student_Id);
+        }
+
         public ResultTrack Update(Phone entity)
         {
             return phoneRepository.Update(entity);

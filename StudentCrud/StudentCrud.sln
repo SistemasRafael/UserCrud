@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentCrud.Domain.Services
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentCrud.Infrastucture.Database", "StudentCrud.Infrastucture.Database\StudentCrud.Infrastucture.Database.csproj", "{F3781F8B-6A69-4D95-8BF6-34DA169E4EDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentCrud.Domain.Dto", "StudentCrud.Domain.Dto\StudentCrud.Domain.Dto.csproj", "{FC121A84-360B-4A9F-9CE1-9306917356F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F3781F8B-6A69-4D95-8BF6-34DA169E4EDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3781F8B-6A69-4D95-8BF6-34DA169E4EDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3781F8B-6A69-4D95-8BF6-34DA169E4EDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC121A84-360B-4A9F-9CE1-9306917356F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC121A84-360B-4A9F-9CE1-9306917356F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC121A84-360B-4A9F-9CE1-9306917356F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC121A84-360B-4A9F-9CE1-9306917356F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

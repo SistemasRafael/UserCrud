@@ -11,5 +11,6 @@ namespace StudentCrud.Domain.Services.Contracts
         ResultTrack Delete(Email entity);
         IEnumerable<Email> GetAll();
         Email GetBy(string email_Name);
+        Email GetByStudentId(int student_Id);
     }
 }
