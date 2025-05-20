@@ -160,6 +160,41 @@ namespace StudentCrud.Infrastucture.Database
             return addresses.FirstOrDefault();
         }
 
+        public Address GetByStudentId(int student_Id)
+        {
+            var addresses = new List<Address>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[dbo].[spGetAddressByStudentId]";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            addresses.Add(new Address()
+                            {
+                                Address_Id = int.Parse(GetValue(reader["Address_Id"])),
+                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                Address_Line = GetValue(reader["Address_Line"]),
+                                City = GetValue(reader["City"]),
+                                Zip_Codepost = GetValue(reader["Zip_Codepost"]),
+                                State = GetValue(reader["State"])
+                            });
+                        }
+                    }
+                }
+            }
+
+            return addresses.FirstOrDefault();
+        }
+
         public ResultTrack Update(Address entity)
         {
             try

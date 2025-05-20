@@ -12,5 +12,6 @@ namespace StudentCrud.Domain.Model.Repositories
         IDeleteRepository<Address, ResultTrack>
     {
         IEnumerable<Address> GetAll();
+        Address GetByStudentId(int student_Id);
     }
 }

@@ -3,7 +3,7 @@ class PhoneService {
     addPhone(data, success, error) {
         $.ajax({
             type: "POST",
-            url: "/Default.aspx/AddPhone",
+            url: "/AddStudent.aspx/Add_Phone",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",

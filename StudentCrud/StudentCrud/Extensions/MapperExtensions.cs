@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using StudentCrud.Domain.Dto;
 using StudentCrud.Domain.Model.DatabaseModels;
 using StudentCrud.Models;
 
@@ -13,7 +14,12 @@ namespace StudentCrud.Extensions
              cfg.CreateMap<AddressAddParameters, Address>();
              cfg.CreateMap<EmailAddParameters, Email>();
              cfg.CreateMap<PhoneAddParameters, Phone>();
-             
+
+             cfg.CreateMap<Student, StudentDto>();
+             cfg.CreateMap<Address, AddressDto>();
+             cfg.CreateMap<Email, EmailDto>();
+             cfg.CreateMap<Phone, PhoneDto>();
+
          }).CreateMapper();
 
         public static Student MapToModel(this StudentAddParameters studentAddParametres)
@@ -27,5 +33,17 @@ namespace StudentCrud.Extensions
 
         public static Phone MapToModel(this PhoneAddParameters phoneAddParameters)
           => _applicationMapper.Map<Phone>(phoneAddParameters);
+
+        public static StudentDto MapToDto(this Student student)
+         => _applicationMapper.Map<StudentDto>(student);
+
+        public static AddressDto MapToDto(this Address address)
+          => _applicationMapper.Map<AddressDto>(address);
+
+        public static EmailDto MapToDto(this Email email)
+          => _applicationMapper.Map<EmailDto>(email);
+
+        public static PhoneDto MapToDto(this Phone phone)
+          => _applicationMapper.Map<PhoneDto>(phone);
     }
 }

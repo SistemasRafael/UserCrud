@@ -11,5 +11,6 @@ namespace StudentCrud.Domain.Services.Contracts
         ResultTrack Delete(Phone entity);
         IEnumerable<Phone> GetAll();
         Phone GetBy(int phonr_Id);
+        Phone GetByStudentId(int student_Id);
     }
 }

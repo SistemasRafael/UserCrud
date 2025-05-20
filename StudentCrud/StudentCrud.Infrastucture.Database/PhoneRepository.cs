@@ -164,6 +164,43 @@ namespace StudentCrud.Infrastucture.Database
             return phones.FirstOrDefault();
         }
 
+        public Phone GetByStudentId(int student_Id)
+        {
+            var phones = new List<Phone>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = "[dbo].[spGetPhoneByStudent_Id]";
+                    command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            phones.Add(new Phone()
+                            {
+                                Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
+                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                Phone_Number = GetValue(reader["Phone_Number"]),
+                                Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
+                                Country_Code = GetValue(reader["Country_Code"]),
+                                Area_Code = GetValue(reader["Area_Code"]),
+                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                            });
+                        }
+                    }
+                }
+            }
+
+            return phones.FirstOrDefault();
+        }
+
         public ResultTrack Update(Phone entity)
         {
             try

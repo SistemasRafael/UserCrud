@@ -31,6 +31,11 @@ namespace StudentCrud.Domain.Services.Implementations
             return addressRepository.GetBy(address_Id);
         }
 
+        public Address GetByStudentId(int student_Id)
+        {
+            return addressRepository.GetByStudentId(student_Id);
+        }
+
         public ResultTrack Update(Address entity)
         {
             return addressRepository.Update(entity);

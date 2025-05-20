@@ -3,7 +3,7 @@ class EmailService {
     addEmail(data, success, error) {
         $.ajax({
             type: "POST",
-            url: "/Default.aspx/AddEmail",
+            url: "/AddStudent.aspx/Add_Email",
             data: JSON.stringify(data),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
