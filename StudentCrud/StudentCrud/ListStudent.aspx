@@ -1,5 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListStudent.aspx.cs" Inherits="StudentCrud.ListStudent" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="alert alert-danger alert-dismissible fade d-none" id="Faild-Message-Id" role="alert"></div>
     <asp:GridView 
         ID="GHotels" 
         runat="server" 

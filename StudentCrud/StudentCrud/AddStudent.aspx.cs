@@ -97,7 +97,6 @@ namespace StudentCrud
             if (Page.IsValid)
             {
                 AddStudentData();
-                ShowSuccessMessage();
             }
         }
 
@@ -111,16 +110,24 @@ namespace StudentCrud
             if (Page.IsValid)
             {
                 UpdateStudentData();
-                ShowSuccessMessage();
             }
         }
 
-        void ShowSuccessMessage()
+        void ShowSuccessMessage(string successMessage)
         {
             var sciprt = "$('#Success-Message-Id').removeClass('d-none');" +
-                         "$('#Success-Message-Id').addClass('show'); " +
+                         "$('#Success-Message-Id').addClass('show');" +
+                         "$('#Success-Message-Id').text('" + successMessage + "');" +
                          "setTimeout(function () { $('#Success-Message-Id').hide(); }, 4000);";
             ClientScript.RegisterStartupScript(GetType(), "messageSuccess", sciprt, true);
+        }
+
+        void ShowFaildMessage(string errorMessage)
+        {
+            var sciprt = "$('#Faild-Message-Id').removeClass('d-none');" +
+                         "$('#Faild-Message-Id').addClass('show'); " +
+                         "$('#Faild-Message-Id').text('" + errorMessage + "');";
+            ClientScript.RegisterStartupScript(GetType(), "messageFaild", sciprt, true);
         }
 
         void UpdateStudentData()
@@ -205,10 +212,12 @@ namespace StudentCrud
                         Area_Code = AreaCodeId.Text,
                     });
                 }
+
+                ShowSuccessMessage("Data were updated successfully");
             }
             catch (Exception ex)
             {
-
+                ShowFaildMessage(ex.Message);
             }
         }
 
@@ -249,11 +258,12 @@ namespace StudentCrud
                     Area_Code = AreaCodeId.Text,
                 });
 
+                ShowSuccessMessage("Data were save successfully");
                 ClearForm();
             }
             catch (Exception ex)
             {
-
+                ShowFaildMessage(ex.Message);
             }
         }
 
@@ -381,8 +391,16 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
+        }
 
-            return -1;
+        string validateFields()
+        {
+
+            return "";
         }
 
         int Add_Address(AddressAddParameters address)
@@ -395,8 +413,10 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
-
-            return -1;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         string Add_Email(EmailAddParameters email)
@@ -409,8 +429,10 @@ namespace StudentCrud
             {
                 return resultTrack.Output.ToString();
             }
-
-            return string.Empty;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         int Add_Phone(PhoneAddParameters phone)
@@ -423,8 +445,10 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
-
-            return -1;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         int Update_Student(StudentUpdateParameters student)
@@ -437,8 +461,10 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
-
-            return -1;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         int Update_Address(AddressUpdateParameters address)
@@ -451,8 +477,10 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
-
-            return -1;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         string Update_Email(EmailUpdateParameters email)
@@ -465,8 +493,10 @@ namespace StudentCrud
             {
                 return resultTrack.Output.ToString();
             }
-
-            return string.Empty;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
 
         int Update_Phone(PhoneUpdateParameters phone)
@@ -479,8 +509,10 @@ namespace StudentCrud
             {
                 return (int)resultTrack.Output;
             }
-
-            return -1;
+            else
+            {
+                throw new ArgumentException(resultTrack.Message);
+            }
         }
     }
 }

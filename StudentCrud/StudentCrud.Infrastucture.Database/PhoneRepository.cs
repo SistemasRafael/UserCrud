@@ -96,32 +96,39 @@ namespace StudentCrud.Infrastucture.Database
         {
             var phones = new List<Phone>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetAllPhone]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAllPhone]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            phones.Add(new Phone()
+                            while (reader.Read())
                             {
-                                Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Phone_Number = GetValue(reader["Phone_Number"]),
-                                Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
-                                Country_Code = GetValue(reader["Country_Code"]),
-                                Area_Code = GetValue(reader["Area_Code"]),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                phones.Add(new Phone()
+                                {
+                                    Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Phone_Number = GetValue(reader["Phone_Number"]),
+                                    Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
+                                    Country_Code = GetValue(reader["Country_Code"]),
+                                    Area_Code = GetValue(reader["Area_Code"]),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return phones;
@@ -130,35 +137,41 @@ namespace StudentCrud.Infrastucture.Database
         public Phone GetBy(int phone_id)
         {
             var phones = new List<Phone>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetByPhone]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Phone_Id", phone_id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetByPhone]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Phone_Id", phone_id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            phones.Add(new Phone()
+                            while (reader.Read())
                             {
-                                Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Phone_Number = GetValue(reader["Phone_Number"]),
-                                Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
-                                Country_Code = GetValue(reader["Country_Code"]),
-                                Area_Code = GetValue(reader["Area_Code"]),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                phones.Add(new Phone()
+                                {
+                                    Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Phone_Number = GetValue(reader["Phone_Number"]),
+                                    Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
+                                    Country_Code = GetValue(reader["Country_Code"]),
+                                    Area_Code = GetValue(reader["Area_Code"]),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return phones.FirstOrDefault();
@@ -168,34 +181,41 @@ namespace StudentCrud.Infrastucture.Database
         {
             var phones = new List<Phone>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetPhoneByStudent_Id]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Student_Id", student_Id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetPhoneByStudent_Id]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            phones.Add(new Phone()
+                            while (reader.Read())
                             {
-                                Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Phone_Number = GetValue(reader["Phone_Number"]),
-                                Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
-                                Country_Code = GetValue(reader["Country_Code"]),
-                                Area_Code = GetValue(reader["Area_Code"]),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                phones.Add(new Phone()
+                                {
+                                    Phone_Id = int.Parse(GetValue(reader["Phone_Id"])),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Phone_Number = GetValue(reader["Phone_Number"]),
+                                    Phone_Type = int.Parse(GetValue(reader["Phone_Type"])),
+                                    Country_Code = GetValue(reader["Country_Code"]),
+                                    Area_Code = GetValue(reader["Area_Code"]),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return phones.FirstOrDefault();

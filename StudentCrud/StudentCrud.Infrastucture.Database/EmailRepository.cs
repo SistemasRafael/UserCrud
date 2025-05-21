@@ -94,29 +94,36 @@ namespace StudentCrud.Infrastucture.Database
         {
             var emails = new List<Email>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetAllEmail]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAllEmail]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            emails.Add(new Email()
+                            while (reader.Read())
                             {
-                                Email_Name = GetValue(reader["Email_Name"]),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Email_Type = int.Parse(GetValue(reader["Email_Type"])),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                emails.Add(new Email()
+                                {
+                                    Email_Name = GetValue(reader["Email_Name"]),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Email_Type = int.Parse(GetValue(reader["Email_Type"])),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return emails;
@@ -126,31 +133,38 @@ namespace StudentCrud.Infrastucture.Database
         {
             var emails = new List<Email>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetByEmail]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Email_Name", email_Name);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetByEmail]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Email_Name", email_Name);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            emails.Add(new Email()
+                            while (reader.Read())
                             {
-                                Email_Name = GetValue(reader["Email_Name"]),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Email_Type = int.Parse(GetValue(reader["Email_Type"])),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                emails.Add(new Email()
+                                {
+                                    Email_Name = GetValue(reader["Email_Name"]),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Email_Type = int.Parse(GetValue(reader["Email_Type"])),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return emails.FirstOrDefault();
@@ -159,32 +173,38 @@ namespace StudentCrud.Infrastucture.Database
         public Email GetByStudentId(int student_Id)
         {
             var emails = new List<Email>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetEmailByStudentId]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Student_Id", student_Id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetEmailByStudentId]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            emails.Add(new Email()
+                            while (reader.Read())
                             {
-                                Email_Name = GetValue(reader["Email_Name"]),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Email_Type = int.Parse(GetValue(reader["Email_Type"])),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                emails.Add(new Email()
+                                {
+                                    Email_Name = GetValue(reader["Email_Name"]),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Email_Type = int.Parse(GetValue(reader["Email_Type"])),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return emails.FirstOrDefault();

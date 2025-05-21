@@ -93,31 +93,38 @@ namespace StudentCrud.Infrastucture.Database
         public IEnumerable<Student> GetAll()
         {
             var students = new List<Student>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
-                {
-                    command.CommandText = "[dbo].[spGetAllStudent]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    using (var reader = command.ExecuteReader())
+            try { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAllStudent]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            students.Add(new Student()
+                            while (reader.Read())
                             {
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Last_Name = GetValue(reader["Last_Name"]),
-                                Middle_Name = GetValue(reader["Middle_Name"]),
-                                First_Name = GetValue(reader["First_Name"]),
-                                Gender = int.Parse(GetValue(reader["Gender"])),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"])),
-                            });
+                                students.Add(new Student()
+                                {
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Last_Name = GetValue(reader["Last_Name"]),
+                                    Middle_Name = GetValue(reader["Middle_Name"]),
+                                    First_Name = GetValue(reader["First_Name"]),
+                                    Gender = int.Parse(GetValue(reader["Gender"])),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"])),
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return students;
@@ -126,33 +133,41 @@ namespace StudentCrud.Infrastucture.Database
         public Student GetBy(int student_Id)
         {
             var students = new List<Student>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetByStudent]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Student_Id", student_Id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetByStudent]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            students.Add(new Student()
+                            while (reader.Read())
                             {
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Last_Name = GetValue(reader["Last_Name"]),
-                                Middle_Name = GetValue(reader["Middle_Name"]),
-                                First_Name = GetValue(reader["First_Name"]),
-                                Gender = int.Parse(GetValue(reader["Gender"])),
-                                Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
-                                Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
-                            });
+                                students.Add(new Student()
+                                {
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Last_Name = GetValue(reader["Last_Name"]),
+                                    Middle_Name = GetValue(reader["Middle_Name"]),
+                                    First_Name = GetValue(reader["First_Name"]),
+                                    Gender = int.Parse(GetValue(reader["Gender"])),
+                                    Create_On = DateTime.Parse(GetValue(reader["Create_On"])),
+                                    Update_On = DateTime.Parse(GetValue(reader["Update_On"]))
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return students.FirstOrDefault();

@@ -20,11 +20,26 @@ namespace StudentCrud
             }
         }
 
+        void ShowFaildMessage(string errorMessage)
+        {
+            var sciprt = "$('#Faild-Message-Id').removeClass('d-none');" +
+                         "$('#Faild-Message-Id').addClass('show'); " +
+                         "$('#Faild-Message-Id').text('" + errorMessage + "');";
+            ClientScript.RegisterStartupScript(GetType(), "messageFaild", sciprt, true);
+        }
+
         void LoadGrid()
         {
-            var table = GetAll_Student();
-            GHotels.DataSource = table.ToDataTable();
-            GHotels.DataBind();
+            try
+            {
+                var table = GetAll_Student();
+                GHotels.DataSource = table.ToDataTable();
+                GHotels.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ShowFaildMessage(ex.Message);
+            }
         }
 
         protected void gdview_RowEditing(object sender, GridViewEditEventArgs e)
