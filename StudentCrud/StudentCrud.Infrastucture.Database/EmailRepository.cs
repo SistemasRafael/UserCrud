@@ -202,6 +202,7 @@ namespace StudentCrud.Infrastucture.Database
                         command.CommandText = "[dbo].[spUpdateEmail]";
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                        command.Parameters.AddWithValue("@Student_Id", entity.Student_Id);
                         command.Parameters.AddWithValue("@Email_Name", entity.Email_Name);
                         command.Parameters.AddWithValue("@Email_Type", entity.Email_Type);
 

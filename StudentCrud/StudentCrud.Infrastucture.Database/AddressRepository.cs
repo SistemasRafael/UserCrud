@@ -207,6 +207,7 @@ namespace StudentCrud.Infrastucture.Database
                         command.CommandText = "[dbo].[spUpdateAddress]";
                         command.CommandType = System.Data.CommandType.StoredProcedure;
 
+                        command.Parameters.AddWithValue("@Address_Id", entity.Address_Id);
                         command.Parameters.AddWithValue("@Address_Line", entity.Address_Line);
                         command.Parameters.AddWithValue("@City", entity.City);
                         command.Parameters.AddWithValue("@Zip_Codepost", entity.Zip_Codepost);
