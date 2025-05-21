@@ -93,7 +93,7 @@ namespace StudentCrud
         {
             if (Page.IsValid)
             {
-                AddStudentInformation();
+                AddStudentData();
                 ShowSuccessMessage();
             }
         }
@@ -107,7 +107,7 @@ namespace StudentCrud
         {
             if (Page.IsValid)
             {
-                UpdateStudentInformation();
+                UpdateStudentData();
                 ShowSuccessMessage();
             }
         }
@@ -120,7 +120,7 @@ namespace StudentCrud
             ClientScript.RegisterStartupScript(GetType(), "messageSuccess", sciprt, true);
         }
 
-        void UpdateStudentInformation()
+        void UpdateStudentData()
         {
             try
             {
@@ -168,7 +168,7 @@ namespace StudentCrud
             }
         }
 
-        void AddStudentInformation()
+        void AddStudentData()
         {
             try
             {
