@@ -238,6 +238,7 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Extensions\DataTableExtensions.cs" />
     <Compile Include="Extensions\MapperExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -250,9 +251,13 @@
       <DependentUpon>ListStudent.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\AddressAddParameters.cs" />
+    <Compile Include="Models\AddressUpdateParameters.cs" />
     <Compile Include="Models\EmailAddParameters.cs" />
+    <Compile Include="Models\EmailUpdateParameters.cs" />
     <Compile Include="Models\PhoneAddParameters.cs" />
+    <Compile Include="Models\PhoneUpdateParameters.cs" />
     <Compile Include="Models\StudentAddParameters.cs" />
+    <Compile Include="Models\StudentUpdateParameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\StudentService.js" />
     <Compile Include="Site.Master.cs">

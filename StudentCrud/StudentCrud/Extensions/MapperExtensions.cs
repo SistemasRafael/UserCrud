@@ -15,6 +15,11 @@ namespace StudentCrud.Extensions
              cfg.CreateMap<EmailAddParameters, Email>();
              cfg.CreateMap<PhoneAddParameters, Phone>();
 
+             cfg.CreateMap<StudentUpdateParameters, Student>();
+             cfg.CreateMap<AddressUpdateParameters, Address>();
+             cfg.CreateMap<EmailUpdateParameters, Email>();
+             cfg.CreateMap<PhoneUpdateParameters, Phone>();
+
              cfg.CreateMap<Student, StudentDto>();
              cfg.CreateMap<Address, AddressDto>();
              cfg.CreateMap<Email, EmailDto>();
@@ -33,6 +38,18 @@ namespace StudentCrud.Extensions
 
         public static Phone MapToModel(this PhoneAddParameters phoneAddParameters)
           => _applicationMapper.Map<Phone>(phoneAddParameters);
+
+        public static Student MapToModel(this StudentUpdateParameters studentUpdateParameters)
+          => _applicationMapper.Map<Student>(studentUpdateParameters);
+
+        public static Address MapToModel(this AddressUpdateParameters addressUpdateParameters)
+          => _applicationMapper.Map<Address>(addressUpdateParameters);
+
+        public static Email MapToModel(this EmailUpdateParameters emailUpdateParameters)
+          => _applicationMapper.Map<Email>(emailUpdateParameters);
+
+        public static Phone MapToModel(this PhoneUpdateParameters phoneUpdateParameters)
+          => _applicationMapper.Map<Phone>(phoneUpdateParameters);
 
         public static StudentDto MapToDto(this Student student)
          => _applicationMapper.Map<StudentDto>(student);

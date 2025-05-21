@@ -23,6 +23,13 @@ textarea {
     width: 100%;
 }
 
+.invalid-feedback-validation {
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .body-content {

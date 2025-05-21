@@ -3,23 +3,44 @@ using StudentCrud.Domain.Services.Implementations;
 using StudentCrud.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace StudentCrud
 {
     public partial class ListStudent : Page
     {
-        protected void Page_LoadComplete(object sender, EventArgs e)
+        protected void Page_Load(object sender, EventArgs e)
         {
-            string scripts = "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/StudentService.js\"></script>";
-            scripts += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/PageListStudent.js\"></script>";
-            ClientScript.RegisterStartupScript(this.GetType(), "myKey", scripts, false);
+            if (!IsPostBack)
+            {
+                LoadGrid();
+            }
         }
 
-        [WebMethod]
-        public static List<StudentDto> GetAll_Student()
+        void LoadGrid()
+        {
+            var table = GetAll_Student();
+            GHotels.DataSource = table.ToDataTable();
+            GHotels.DataBind();
+        }
+
+        protected void gdview_RowEditing(object sender, GridViewEditEventArgs e)
+        {
+            int student_Id = int.Parse(GHotels.DataKeys[e.NewEditIndex].Value.ToString());
+            Response.Redirect($"AddStudent.aspx?Student_Id={student_Id}");
+        }
+
+        protected void CustomersGridView_RowDeleting(object sender, GridViewDeleteEventArgs e)
+        {
+            int student_Id = int.Parse(GHotels.DataKeys[e.RowIndex].Value.ToString());
+            Delete_Student(student_Id);
+            LoadGrid();
+        }
+
+        List<StudentDto> GetAll_Student()
         {
             var studentService = new StudentService();
             var addressService = new AddressService();
@@ -31,16 +52,15 @@ namespace StudentCrud
                                          .ToList();
 
             students.ForEach(student => {
-                student.Address = addressService.GetByStudentId(student.Student_Id).MapToDto();
-                student.Email = emailService.GetByStudentId(student.Student_Id).MapToDto();
-                student.Phone = phoneService.GetByStudentId(student.Student_Id).MapToDto();
+                student.Address = addressService.GetByStudentId(student.Student_Id).MapToDto() ?? new AddressDto();
+                student.Email = emailService.GetByStudentId(student.Student_Id).MapToDto() ?? new EmailDto();
+                student.Phone = phoneService.GetByStudentId(student.Student_Id).MapToDto() ?? new PhoneDto();
             });
 
             return students;
         }
 
-        [WebMethod]
-        public static string Delete_Student(int Student_Id)
+        int Delete_Student(int Student_Id)
         {
             var studentService = new StudentService();
             var addressService = new AddressService();
@@ -52,7 +72,7 @@ namespace StudentCrud
             var email = emailService.GetByStudentId(Student_Id);
             var phone = phoneService.GetByStudentId(Student_Id);
 
-            if(address != null)
+            if (address != null)
             {
                 addressService.Delete(address);
             }
@@ -62,14 +82,14 @@ namespace StudentCrud
                 emailService.Delete(email);
             }
 
-            if (phone != null) 
+            if (phone != null)
             {
                 phoneService.Delete(phone);
             }
 
             studentService.Delete(student);
 
-            return Student_Id.ToString();
+            return Student_Id;
         }
     }
 }

@@ -1,48 +1,29 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ListStudent.aspx.cs" Inherits="StudentCrud.ListStudent" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <table class="table table-content">
-      <thead>
-        <tr>
-            <th >First Name</th>
-            <th >Last Name</th>
-            <th >Middle Name</th>
-            <th >Gender</th>
-            <th >Email</th>
-            <th >Email_Type</th>
-            <th >Address_Line</th>
-            <th >City</th>
-            <th >State</th>
-            <th >Zip_Codepost</th>
-            <th >Area_Code</th>
-            <th >Country_Code</th>
-            <th >Phone_Number</th>
-            <th >Phone_Type</th>
-            <th >Actions</th>
-        </tr>
-      </thead>
-      <tbody id="List-Student-Body-Id" class="table-body">
-      </tbody>
-    </table>
-
-  <%--  
-<div id="myModal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Modal body text goes here.</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save changes</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>--%>
-
+    <asp:GridView 
+        ID="GHotels" 
+        runat="server" 
+        CssClass="table" 
+        AutoGenerateColumns="False" 
+        OnRowEditing="gdview_RowEditing"
+        OnRowDeleting="CustomersGridView_RowDeleting"
+        DataKeyNames="Student_Id" >
+            <Columns>
+                <asp:CommandField ShowDeleteButton="True" ShowEditButton="True" />
+                <asp:BoundField ReadOnly="true" DataField="First_Name" HeaderText="FirstName"/>
+                <asp:BoundField ReadOnly="true" DataField="Middle_Name" HeaderText="MiddleName"/>
+                <asp:BoundField ReadOnly="true" DataField="Last_Name" HeaderText="Last_Name"/>
+                <asp:BoundField ReadOnly="true" DataField="Gender" HeaderText="Gender"/>
+                <asp:BoundField ReadOnly="true" DataField="Address.Address_Line" HeaderText="Address"/>
+                <asp:BoundField ReadOnly="true" DataField="Address.City" HeaderText="City"/>
+                <asp:BoundField ReadOnly="true" DataField="Address.Zip_Codepost" HeaderText="Zip_Codepost"/>
+                <asp:BoundField ReadOnly="true" DataField="Address.State" HeaderText="State"/>
+                <asp:BoundField ReadOnly="true" DataField="Email.Email_Name" HeaderText="Email"/>
+                <asp:BoundField ReadOnly="true" DataField="Email.Email_Type" HeaderText="Email Type"/>
+                <asp:BoundField ReadOnly="true" DataField="Phone.Phone_Number" HeaderText="Phone Number"/>
+                <asp:BoundField ReadOnly="true" DataField="Phone.Phone_Type" HeaderText="Phone Type"/>
+                <asp:BoundField ReadOnly="true" DataField="Phone.Country_Code" HeaderText="Country Code"/>
+                <asp:BoundField ReadOnly="true" DataField="Phone.Area_Code" HeaderText="Area Code"/>
+            </Columns>
+        </asp:GridView>
 </asp:Content>
