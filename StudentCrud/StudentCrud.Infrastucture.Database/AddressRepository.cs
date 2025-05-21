@@ -10,7 +10,7 @@ namespace StudentCrud.Infrastucture.Database
 {
     public class AddressRepository : IAddressRepository
     {
-        private readonly string connectionString = "Server=192.168.1.7\\SQLEXPRESS;Integrated Security=false;Initial Catalog=CrudStudent;User ID=sa;Password=12baterista;";
+        private readonly string connectionString = "Server=192.168.1.8\\SQLEXPRESS;Integrated Security=false;Initial Catalog=CrudStudent;User ID=sa;Password=12baterista;";
 
         public ResultTrack Add(Address entity)
         {
@@ -96,30 +96,37 @@ namespace StudentCrud.Infrastucture.Database
         {
             var addresses = new List<Address>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetAllAddress]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAllAddress]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            addresses.Add(new Address()
+                            while (reader.Read())
                             {
-                                Address_Id = int.Parse(GetValue(reader["Address_Id"])),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Address_Line = GetValue(reader["Address_Line"]),
-                                City = GetValue(reader["City"]),
-                                Zip_Codepost = GetValue(reader["Zip_Codepost"]),
-                                State = GetValue(reader["State"])
-                            });
+                                addresses.Add(new Address()
+                                {
+                                    Address_Id = int.Parse(GetValue(reader["Address_Id"])),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Address_Line = GetValue(reader["Address_Line"]),
+                                    City = GetValue(reader["City"]),
+                                    Zip_Codepost = GetValue(reader["Zip_Codepost"]),
+                                    State = GetValue(reader["State"])
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return addresses;
@@ -164,32 +171,38 @@ namespace StudentCrud.Infrastucture.Database
         {
             var addresses = new List<Address>();
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetAddressByStudentId]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Student_Id", student_Id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAddressByStudentId]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Student_Id", student_Id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            addresses.Add(new Address()
+                            while (reader.Read())
                             {
-                                Address_Id = int.Parse(GetValue(reader["Address_Id"])),
-                                Student_Id = int.Parse(GetValue(reader["Student_Id"])),
-                                Address_Line = GetValue(reader["Address_Line"]),
-                                City = GetValue(reader["City"]),
-                                Zip_Codepost = GetValue(reader["Zip_Codepost"]),
-                                State = GetValue(reader["State"])
-                            });
+                                addresses.Add(new Address()
+                                {
+                                    Address_Id = int.Parse(GetValue(reader["Address_Id"])),
+                                    Student_Id = int.Parse(GetValue(reader["Student_Id"])),
+                                    Address_Line = GetValue(reader["Address_Line"]),
+                                    City = GetValue(reader["City"]),
+                                    Zip_Codepost = GetValue(reader["Zip_Codepost"]),
+                                    State = GetValue(reader["State"])
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return addresses.FirstOrDefault();

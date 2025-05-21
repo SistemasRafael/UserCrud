@@ -1,5 +1,6 @@
 ﻿using StudentCrud.Domain.Model.DatabaseModels;
 using StudentCrud.Domain.Model.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,27 +14,33 @@ namespace StudentCrud.Infrastucture.Database
         public IEnumerable<EmailType> GetAll()
         {
             var emailTypes = new List<EmailType>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetAllEmailType]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetAllEmailType]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            emailTypes.Add(new EmailType()
+                            while (reader.Read())
                             {
-                                Email_Type_Id = int.Parse(GetValue(reader["Email_Type_Id"])),
-                                Email_Type = GetValue(reader["Email_Type"])
-                            });
+                                emailTypes.Add(new EmailType()
+                                {
+                                    Email_Type_Id = int.Parse(GetValue(reader["Email_Type_Id"])),
+                                    Email_Type = GetValue(reader["Email_Type"])
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return emailTypes;
@@ -42,29 +49,36 @@ namespace StudentCrud.Infrastucture.Database
         public EmailType GetBy(int email_Type_Id)
         {
             var emailTypes = new List<EmailType>();
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = connection.CreateCommand())
+            
+            try 
+            { 
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.CommandText = "[dbo].[spGetByEmailType]";
-                    command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    command.Parameters.AddWithValue("@Email_Type_Id", email_Type_Id);
-
-                    using (var reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = connection.CreateCommand())
                     {
-                        while (reader.Read())
+                        command.CommandText = "[dbo].[spGetByEmailType]";
+                        command.CommandType = System.Data.CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@Email_Type_Id", email_Type_Id);
+
+                        using (var reader = command.ExecuteReader())
                         {
-                            emailTypes.Add(new EmailType()
+                            while (reader.Read())
                             {
-                                Email_Type_Id = int.Parse(GetValue(reader["Email_Type_Id"])),
-                                Email_Type = GetValue(reader["Email_Type"])
-                            });
+                                emailTypes.Add(new EmailType()
+                                {
+                                    Email_Type_Id = int.Parse(GetValue(reader["Email_Type_Id"])),
+                                    Email_Type = GetValue(reader["Email_Type"])
+                                });
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
 
             return emailTypes.FirstOrDefault();

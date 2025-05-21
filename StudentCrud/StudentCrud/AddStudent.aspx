@@ -113,9 +113,8 @@
                           </div>
                      </div>
                  </div>
-                <div class="alert alert-success alert-dismissible fade d-none" id="Success-Message-Id" role="alert">
-                    Update Success!
-                </div>
+                <div class="alert alert-success alert-dismissible fade d-none" id="Success-Message-Id" role="alert"></div>
+                <div class="alert alert-danger alert-dismissible fade d-none" id="Faild-Message-Id" role="alert"></div>
              </div>
              <div class="card-footer">
                  <div class="col-12">
