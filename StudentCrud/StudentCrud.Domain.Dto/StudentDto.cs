@@ -11,6 +11,7 @@ namespace StudentCrud.Domain.Dto
         public DateTime Create_On { get; set; }
         public DateTime Update_On { get; set; }
         public int Gender { get; set; }
+        public GenderTypeDto GenderType { get; set; }
         public AddressDto Address { get; set; }
         public EmailDto Email { get; set; }
         public PhoneDto Phone { get; set; }

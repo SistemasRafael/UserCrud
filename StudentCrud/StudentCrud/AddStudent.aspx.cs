@@ -4,6 +4,7 @@ using StudentCrud.Extensions;
 using StudentCrud.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -79,11 +80,13 @@ namespace StudentCrud
             var studentService = new StudentService();
             var addressService = new AddressService();
             var emailService = new EmailService();
+            var emailTypeService = new EmailTypeService();
             var phoneService = new PhoneService();
 
             var student = studentService.GetBy(GetStudentId()).MapToDto();
             student.Address = addressService.GetByStudentId(student.Student_Id).MapToDto() ?? new AddressDto();
             student.Email = emailService.GetByStudentId(student.Student_Id).MapToDto() ?? new EmailDto();
+            student.Email.EmailType = emailTypeService.GetBy(student.Email.Email_Type).MapToDto() ?? new EmailTypeDto();
             student.Phone = phoneService.GetByStudentId(student.Student_Id).MapToDto() ?? new PhoneDto();
 
             return student;
@@ -135,32 +138,73 @@ namespace StudentCrud
 
                 var _addressService = new AddressService();
                 var _addres = _addressService.GetByStudentId(GetStudentId());
-                Update_Address(new AddressUpdateParameters()
+                if (_addres != null) { 
+                    Update_Address(new AddressUpdateParameters()
+                    {
+                        Address_Id = _addres.Address_Id,
+                        Address_Line = AddressId.Text,
+                        City = CityId.SelectedValue,
+                        Zip_Codepost = ZipCodeId.Text,
+                        State = StateId.SelectedValue,
+                    });
+                }
+                else
                 {
-                    Address_Id = _addres.Address_Id,
-                    Address_Line = AddressId.Text,
-                    City = CityId.SelectedValue,
-                    Zip_Codepost = ZipCodeId.Text,
-                    State = StateId.SelectedValue,
-                });
+                    Add_Address(new AddressAddParameters()
+                    {
+                        Student_Id = GetStudentId(),
+                        Address_Line = AddressId.Text,
+                        City = CityId.SelectedValue,
+                        Zip_Codepost = ZipCodeId.Text,
+                        State = StateId.SelectedValue,
+                    });
+                }
 
-                Update_Email(new EmailUpdateParameters()
+                var emailService = new EmailService();
+                var _email = emailService.GetByStudentId(GetStudentId());
+                if (_email != null)
                 {
-                    Student_Id = GetStudentId(),
-                    Email_Name = EmailId.Text,
-                    Email_Type = int.Parse(TypeEmailId.SelectedValue)
-                });
+                    Update_Email(new EmailUpdateParameters()
+                    {
+                        Student_Id = GetStudentId(),
+                        Email_Name = EmailId.Text,
+                        Email_Type = int.Parse(TypeEmailId.SelectedValue)
+                    });
+                }
+                else
+                {
+                    Add_Email(new EmailAddParameters()
+                    {
+                        Student_Id = GetStudentId(),
+                        Email_Name = EmailId.Text,
+                        Email_Type = int.Parse(TypeEmailId.SelectedValue)
+                    });
+                }
 
                 var _phoneService = new PhoneService();
                 var _phone = _phoneService.GetByStudentId(GetStudentId());
-                Update_Phone(new PhoneUpdateParameters()
+                if (_phone != null)
                 {
-                    Phone_Id = _phone.Phone_Id,
-                    Phone_Number = PhoneNumberId.Text,
-                    Phone_Type = int.Parse(PhoneTypeId.SelectedValue),
-                    Country_Code = CountryCodeId.Text,
-                    Area_Code = AreaCodeId.Text,
-                });
+                    Update_Phone(new PhoneUpdateParameters()
+                    {
+                        Phone_Id = _phone.Phone_Id,
+                        Phone_Number = PhoneNumberId.Text,
+                        Phone_Type = int.Parse(PhoneTypeId.SelectedValue),
+                        Country_Code = CountryCodeId.Text,
+                        Area_Code = AreaCodeId.Text,
+                    });
+                }
+                else
+                {
+                    Add_Phone(new PhoneAddParameters()
+                    {
+                        Student_Id = GetStudentId(),
+                        Phone_Number = PhoneNumberId.Text,
+                        Phone_Type = int.Parse(PhoneTypeId.SelectedValue),
+                        Country_Code = CountryCodeId.Text,
+                        Area_Code = AreaCodeId.Text,
+                    });
+                }
             }
             catch (Exception ex)
             {
@@ -224,47 +268,34 @@ namespace StudentCrud
             LastNameId.Text = string.Empty;
             MiddleNameId.Text = string.Empty;
             GenderId.SelectedValue = "0";
-            AddressId.Text = string.Empty;
-            CityId.SelectedValue = "0";
-            ZipCodeId.Text = string.Empty;
-            StateId.SelectedValue = "0";
+            StateId.SelectedValue = "Select option";
+            CityId.SelectedValue = "Select option";            
             EmailId.Text = string.Empty;
             TypeEmailId.SelectedValue = "0";
+            ZipCodeId.Text = string.Empty;
+            AddressId.Text = string.Empty;
             PhoneNumberId.Text = string.Empty;
             PhoneTypeId.SelectedValue = "0";
             CountryCodeId.Text = string.Empty;
             AreaCodeId.Text = string.Empty;
-            //TituloId.Text = "Add Student";
-            //BtnSave.Text = "Add";
-            //Student_Id = 0;
-        }
-
-        protected void Page_LoadComplete()
-        {
-            string myScript2 = "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/StudentService.js\"></script>";
-            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/AddressService.js\"></script>";
-            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/EmailService.js\"></script>";
-            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/PhoneService.js\"></script>";
-            myScript2 += "\n<script type=\"text/javascript\" language=\"Javascript\" src=\"Scripts/PageAddStudent.js\"></script>";
-            ClientScript.RegisterStartupScript(this.GetType(), "myKey", myScript2, false);
         }
 
         void LoadComboGender()
         {
-            List<string> genders = new List<string>() {
-                "Select option",
-                "Male",
-                "Female"
-            };
+            var genderTypeService = new GenderTypeService();
+            var genders = genderTypeService.GetAll().ToList();
 
-            int index = 0;
+            ListItem itemOpt = new ListItem();
+            itemOpt.Text = "Select option";
+            itemOpt.Value = "0";
+            GenderId.Items.Add(itemOpt);
+
             genders.ForEach(gender =>
             {
                 ListItem item = new ListItem();
-                item.Text = gender;
-                item.Value = index.ToString();
+                item.Text = gender.Gender_Type;
+                item.Value = gender.Gender_Type_Id.ToString();
                 GenderId.Items.Add(item);
-                index++;
             });
         }
 
@@ -276,14 +307,12 @@ namespace StudentCrud
                 "Sinaloa"
             };
 
-            int index = 0;
-            states.ForEach(gender =>
+            states.ForEach(state =>
             {
                 ListItem item = new ListItem();
-                item.Text = gender;
-                item.Value = index.ToString();
+                item.Text = state;
+                item.Value = state;
                 StateId.Items.Add(item);
-                index++;
             });
         }
 
@@ -295,52 +324,50 @@ namespace StudentCrud
                 "Obregon"
             };
 
-            int index = 0;
-            cities.ForEach(gender =>
+            cities.ForEach(citie =>
             {
                 ListItem item = new ListItem();
-                item.Text = gender;
-                item.Value = index.ToString();
+                item.Text = citie;
+                item.Value = citie;
                 CityId.Items.Add(item);
-                index++;
             });
         }
 
         void LoadComboEmailType()
         {
-            List<string> emailTypes = new List<string>() {
-                "Select option",
-                "Gmail",
-                "Hotmail"
-            };
+            var emailTypeService = new EmailTypeService();
+            var emailTypes = emailTypeService.GetAll().ToList();
 
-            int index = 0;
-            emailTypes.ForEach(gender =>
+            ListItem itemOpt = new ListItem();
+            itemOpt.Text = "Select option";
+            itemOpt.Value = "0";
+            TypeEmailId.Items.Add(itemOpt);
+
+            emailTypes.ForEach(email =>
             {
                 ListItem item = new ListItem();
-                item.Text = gender;
-                item.Value = index.ToString();
+                item.Text = email.Email_Type;
+                item.Value = email.Email_Type_Id.ToString();
                 TypeEmailId.Items.Add(item);
-                index++;
             });
         }
 
         void LoadComboPhoneType()
         {
-            List<string> phoneTypes = new List<string>() {
-                "Select option",
-                "Phone",
-                "Cell phone"
-            };
+            var phoneTypeService = new PhoneTypeService();
+            var phoneTypes = phoneTypeService.GetAll().ToList();
 
-            int index = 0;
-            phoneTypes.ForEach(gender =>
+            ListItem itemOpt = new ListItem();
+            itemOpt.Text = "Select option";
+            itemOpt.Value = "0";
+            PhoneTypeId.Items.Add(itemOpt);
+
+            phoneTypes.ForEach(phoneType =>
             {
                 ListItem item = new ListItem();
-                item.Text = gender;
-                item.Value = index.ToString();
+                item.Text = phoneType.Phone_Type;
+                item.Value = phoneType.Phone_Type_Id.ToString();
                 PhoneTypeId.Items.Add(item);
-                index++;
             });
         }
 

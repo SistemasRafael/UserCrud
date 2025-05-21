@@ -44,7 +44,10 @@
     <Compile Include="Common\ResultTrack.cs" />
     <Compile Include="DatabaseModels\Address.cs" />
     <Compile Include="DatabaseModels\Email.cs" />
+    <Compile Include="DatabaseModels\EmailType.cs" />
+    <Compile Include="DatabaseModels\GenderType.cs" />
     <Compile Include="DatabaseModels\Phone.cs" />
+    <Compile Include="DatabaseModels\PhoneType.cs" />
     <Compile Include="DatabaseModels\Student.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Actions\IAddRepository.cs" />
@@ -53,7 +56,10 @@
     <Compile Include="Repositories\Actions\IUpdateRepository.cs" />
     <Compile Include="Repositories\IAddressRepository.cs" />
     <Compile Include="Repositories\IEmailRepository.cs" />
+    <Compile Include="Repositories\IEmailTypeRepository.cs" />
+    <Compile Include="Repositories\IGenderTypeRepository.cs" />
     <Compile Include="Repositories\IPhoneRepository.cs" />
+    <Compile Include="Repositories\IPhoneTypeRepository.cs" />
     <Compile Include="Repositories\IStudentRepository.cs" />
   </ItemGroup>
   <ItemGroup />

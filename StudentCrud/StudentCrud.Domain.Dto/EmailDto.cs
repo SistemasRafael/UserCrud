@@ -9,5 +9,6 @@ namespace StudentCrud.Domain.Dto
         public int Email_Type { get; set; }
         public DateTime Create_On { get; set; }
         public DateTime Update_On { get; set; }
+        public EmailTypeDto EmailType { get; set; }
     }
 }
