@@ -12,5 +12,6 @@ namespace StudentCrud.Domain.Dto
         public string Area_Code { get; set; }
         public DateTime Create_On { get; set; }
         public DateTime Update_On { get; set; }
+        public PhoneTypeDto PhoneType { get; set; }
     }
 }

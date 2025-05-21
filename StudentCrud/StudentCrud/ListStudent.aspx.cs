@@ -45,16 +45,22 @@ namespace StudentCrud
             var studentService = new StudentService();
             var addressService = new AddressService();
             var emailService = new EmailService();
+            var emailTypeService = new EmailTypeService();
+            var genderTypeService = new GenderTypeService();
             var phoneService = new PhoneService();
+            var phoneTypeService = new PhoneTypeService();
 
             var students = studentService.GetAll()
                                          .Select(item => item.MapToDto())
                                          .ToList();
 
             students.ForEach(student => {
+                student.GenderType = genderTypeService.GetBy(student.Gender).MapToDto() ?? new GenderTypeDto();
                 student.Address = addressService.GetByStudentId(student.Student_Id).MapToDto() ?? new AddressDto();
                 student.Email = emailService.GetByStudentId(student.Student_Id).MapToDto() ?? new EmailDto();
+                student.Email.EmailType = emailTypeService.GetBy(student.Email.Email_Type).MapToDto() ?? new EmailTypeDto();
                 student.Phone = phoneService.GetByStudentId(student.Student_Id).MapToDto() ?? new PhoneDto();
+                student.Phone.PhoneType = phoneTypeService.GetBy(student.Phone.Phone_Type).MapToDto() ?? new PhoneTypeDto();
             });
 
             return students;
