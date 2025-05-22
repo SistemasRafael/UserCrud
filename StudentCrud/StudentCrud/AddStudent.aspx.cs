@@ -126,7 +126,15 @@ namespace StudentCrud
         {
             if (Page.IsValid)
             {
-                AddStudentData();
+                var _email = emailService.GetBy(EmailId.Text);
+                if(_email == null)
+                {
+                    AddStudentData();
+                }
+                else
+                {
+                    ShowFaildMessage($"{EmailId.Text} has assigned to another people, please insert another one");
+                }
             }
         }
 
