@@ -17,6 +17,25 @@ namespace StudentCrud
 {
     public partial class AddStudent : Page
     {
+        public IStudentService studentService;
+        public IAddressService addressService;
+        public IEmailService emailService;
+        public IPhoneService phoneService;
+        public IEmailTypeService emailTypeService;
+        public IGenderTypeService genderTypeService;
+        public IPhoneTypeService phoneTypeService;
+
+        public AddStudent()
+        {
+            studentService = new StudentService();
+            addressService = new AddressService();
+            emailService = new EmailService();
+            phoneService = new PhoneService();
+            emailTypeService = new EmailTypeService();
+            genderTypeService = new GenderTypeService();
+            phoneTypeService = new PhoneTypeService();
+        }
+
         private void Page_Load(object sender, System.EventArgs e)
         {
             if (!IsPostBack)
@@ -82,13 +101,6 @@ namespace StudentCrud
 
         StudentDto GetStudent()
         {
-            var studentService = new StudentService();
-            var addressService = new AddressService();
-            var emailService = new EmailService();
-            var emailTypeService = new EmailTypeService();
-            var phoneService = new PhoneService();
-            var genderTypeService = new GenderTypeService();
-
             var student = studentService.GetBy(GetStudentId());
             var address = addressService.GetByStudentId(student.Student_Id) ?? new Address();
             var email = emailService.GetByStudentId(student.Student_Id) ?? new Email();
@@ -161,8 +173,7 @@ namespace StudentCrud
                     Gender = int.Parse(GenderId.SelectedValue)
                 });
 
-                var _addressService = new AddressService();
-                var _addres = _addressService.GetByStudentId(GetStudentId());
+                var _addres = addressService.GetByStudentId(GetStudentId());
                 if (_addres != null) { 
                     Update_Address(new AddressUpdateParameters()
                     {
@@ -185,7 +196,6 @@ namespace StudentCrud
                     });
                 }
 
-                var emailService = new EmailService();
                 var _email = emailService.GetByStudentId(GetStudentId());
                 if (_email != null)
                 {
@@ -206,8 +216,7 @@ namespace StudentCrud
                     });
                 }
 
-                var _phoneService = new PhoneService();
-                var _phone = _phoneService.GetByStudentId(GetStudentId());
+                var _phone = phoneService.GetByStudentId(GetStudentId());
                 if (_phone != null)
                 {
                     Update_Phone(new PhoneUpdateParameters()
@@ -310,7 +319,6 @@ namespace StudentCrud
 
         void LoadComboGender()
         {
-            var genderTypeService = new GenderTypeService();
             var genders = genderTypeService.GetAll().ToList();
 
             ListItem itemOpt = new ListItem();
@@ -363,7 +371,6 @@ namespace StudentCrud
 
         void LoadComboEmailType()
         {
-            var emailTypeService = new EmailTypeService();
             var emailTypes = emailTypeService.GetAll().ToList();
 
             ListItem itemOpt = new ListItem();
@@ -382,7 +389,6 @@ namespace StudentCrud
 
         void LoadComboPhoneType()
         {
-            var phoneTypeService = new PhoneTypeService();
             var phoneTypes = phoneTypeService.GetAll().ToList();
 
             ListItem itemOpt = new ListItem();
@@ -410,7 +416,6 @@ namespace StudentCrud
                 throw new ArgumentException(message);
             }
 
-            var studentService = new StudentService();
             var _student = student.MapToModel();
 
             var resultTrack = studentService.Add(_student);
@@ -426,7 +431,6 @@ namespace StudentCrud
 
         int Add_Address(AddressAddParameters address)
         {
-            var addressService = new AddressService();
             var _address = address.MapToModel();
 
             var resultTrack = addressService.Add(_address);
@@ -442,7 +446,6 @@ namespace StudentCrud
 
         string Add_Email(EmailAddParameters email)
         {
-            var emailService = new EmailService();
             var _email = email.MapToModel();
 
             var resultTrack = emailService.Add(_email);
@@ -458,7 +461,6 @@ namespace StudentCrud
 
         int Add_Phone(PhoneAddParameters phone)
         {
-            var phoneService = new PhoneService();
             var _phone = phone.MapToModel();
 
             var resultTrack = phoneService.Add(_phone);
@@ -474,7 +476,6 @@ namespace StudentCrud
 
         int Update_Student(StudentUpdateParameters student)
         {
-            var studentService = new StudentService();
             var _student = student.MapToModel();
 
             var resultTrack = studentService.Update(_student);
@@ -490,7 +491,6 @@ namespace StudentCrud
 
         int Update_Address(AddressUpdateParameters address)
         {
-            var addressService = new AddressService();
             var _address = address.MapToModel();
 
             var resultTrack = addressService.Update(_address);
@@ -506,7 +506,6 @@ namespace StudentCrud
 
         string Update_Email(EmailUpdateParameters email)
         {
-            var emailService = new EmailService();
             var _email = email.MapToModel();
 
             var resultTrack = emailService.Update(_email);
@@ -522,7 +521,6 @@ namespace StudentCrud
 
         int Update_Phone(PhoneUpdateParameters phone)
         {
-            var phoneService = new PhoneService();
             var _phone = phone.MapToModel();
 
             var resultTrack = phoneService.Update(_phone);

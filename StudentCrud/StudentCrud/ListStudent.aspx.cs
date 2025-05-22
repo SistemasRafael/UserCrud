@@ -1,8 +1,10 @@
 ﻿using StudentCrud.Domain.Dto;
+using StudentCrud.Domain.Services.Contracts;
 using StudentCrud.Domain.Services.Implementations;
 using StudentCrud.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Web.UI;
@@ -12,6 +14,25 @@ namespace StudentCrud
 {
     public partial class ListStudent : Page
     {
+        public IStudentService studentService;
+        public IAddressService addressService;
+        public IEmailService emailService;
+        public IPhoneService phoneService;
+        public IEmailTypeService emailTypeService;
+        public IGenderTypeService genderTypeService;
+        public IPhoneTypeService phoneTypeService;
+
+        public ListStudent()
+        {
+            studentService = new StudentService();
+            addressService = new AddressService();
+            emailService = new EmailService();
+            phoneService = new PhoneService();
+            emailTypeService = new EmailTypeService();
+            genderTypeService = new GenderTypeService();
+            phoneTypeService = new PhoneTypeService();
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -57,14 +78,6 @@ namespace StudentCrud
 
         List<StudentDto> GetAll_Student()
         {
-            var studentService = new StudentService();
-            var addressService = new AddressService();
-            var emailService = new EmailService();
-            var emailTypeService = new EmailTypeService();
-            var genderTypeService = new GenderTypeService();
-            var phoneService = new PhoneService();
-            var phoneTypeService = new PhoneTypeService();
-
             var students = studentService.GetAll()
                                          .Select(item => item.MapToDto())
                                          .ToList();
@@ -83,11 +96,6 @@ namespace StudentCrud
 
         int Delete_Student(int Student_Id)
         {
-            var studentService = new StudentService();
-            var addressService = new AddressService();
-            var emailService = new EmailService();
-            var phoneService = new PhoneService();
-
             var student = studentService.GetBy(Student_Id);
             var address = addressService.GetByStudentId(Student_Id);
             var email = emailService.GetByStudentId(Student_Id);
