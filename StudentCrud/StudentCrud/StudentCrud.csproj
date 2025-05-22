@@ -274,6 +274,13 @@
     <Compile Include="Site.Mobile.Master.designer.cs">
       <DependentUpon>Site.Mobile.Master</DependentUpon>
     </Compile>
+    <Compile Include="Utilities\DesignPatterns\Builder\StudentBuilder.cs" />
+    <Compile Include="Utilities\DesignPatterns\Builder\IBuilder.cs" />
+    <Compile Include="Utilities\DesignPatterns\Decorator\ConcreteHandler.cs" />
+    <Compile Include="Utilities\DesignPatterns\Decorator\Decoretors\MaxLengthDecorator.cs" />
+    <Compile Include="Utilities\DesignPatterns\Decorator\Decoretors\FieldRequiredDecorator.cs" />
+    <Compile Include="Utilities\DesignPatterns\Decorator\HandlerDecorator.cs" />
+    <Compile Include="Utilities\DesignPatterns\Decorator\IRequestHandler.cs" />
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
