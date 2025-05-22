@@ -2,6 +2,7 @@
 using StudentCrud.Domain.Model.Repositories;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace StudentCrud.Infrastucture.Database
 {
     public class PhoneTypeRepository : IPhoneTypeRepository
     {
-        private readonly string connectionString = "Server=192.168.1.7\\SQLEXPRESS;Integrated Security=false;Initial Catalog=CrudStudent;User ID=sa;Password=12baterista;";
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["localDB"].ConnectionString;
         public IEnumerable<PhoneType> GetAll()
         {
             var phoneTypes = new List<PhoneType>();
