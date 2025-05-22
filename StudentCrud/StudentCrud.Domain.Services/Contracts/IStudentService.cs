@@ -1,6 +1,5 @@
 ﻿using StudentCrud.Domain.Model.Common;
 using StudentCrud.Domain.Model.DatabaseModels;
-using System;
 using System.Collections.Generic;
 
 namespace StudentCrud.Domain.Services.Contracts
