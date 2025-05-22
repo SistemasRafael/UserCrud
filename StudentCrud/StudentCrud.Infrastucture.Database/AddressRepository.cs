@@ -10,7 +10,7 @@ namespace StudentCrud.Infrastucture.Database
 {
     public class AddressRepository : IAddressRepository
     {
-        private readonly string connectionString = "Server=192.168.1.8\\SQLEXPRESS;Integrated Security=false;Initial Catalog=CrudStudent;User ID=sa;Password=12baterista;";
+        private readonly string connectionString = "Server=192.168.1.7\\SQLEXPRESS;Integrated Security=false;Initial Catalog=CrudStudent;User ID=sa;Password=12baterista;";
 
         public ResultTrack Add(Address entity)
         {

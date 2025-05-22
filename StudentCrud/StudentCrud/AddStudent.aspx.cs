@@ -1,7 +1,12 @@
-﻿using StudentCrud.Domain.Dto;
+﻿using Design.Patterns.Examples.Creational.Builder;
+using StudentCrud.Domain.Dto;
+using StudentCrud.Domain.Model.DatabaseModels;
+using StudentCrud.Domain.Services.Contracts;
 using StudentCrud.Domain.Services.Implementations;
 using StudentCrud.Extensions;
 using StudentCrud.Models;
+using StudentCrud.Utilities.DesignPatterns.Decorator;
+using StudentCrud.Utilities.DesignPatterns.Decorator.Decorators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,14 +87,27 @@ namespace StudentCrud
             var emailService = new EmailService();
             var emailTypeService = new EmailTypeService();
             var phoneService = new PhoneService();
+            var genderTypeService = new GenderTypeService();
 
-            var student = studentService.GetBy(GetStudentId()).MapToDto();
-            student.Address = addressService.GetByStudentId(student.Student_Id).MapToDto() ?? new AddressDto();
-            student.Email = emailService.GetByStudentId(student.Student_Id).MapToDto() ?? new EmailDto();
-            student.Email.EmailType = emailTypeService.GetBy(student.Email.Email_Type).MapToDto() ?? new EmailTypeDto();
-            student.Phone = phoneService.GetByStudentId(student.Student_Id).MapToDto() ?? new PhoneDto();
+            var student = studentService.GetBy(GetStudentId());
+            var address = addressService.GetByStudentId(student.Student_Id) ?? new Address();
+            var email = emailService.GetByStudentId(student.Student_Id) ?? new Email();
+            var phone = phoneService.GetByStudentId(student.Student_Id) ?? new Phone();
+            var genderType = genderTypeService.GetBy(student.Gender) ?? new GenderType();
 
-            return student;
+            return StudentBuilder.CreateBuilder()
+                                 .SetStudentId(student.Student_Id)
+                                 .SetFirstName(student.First_Name)
+                                 .SetLastName(student.Last_Name)
+                                 .SetMiddleName(student.Middle_Name)
+                                 .SetCreateOn(student.Create_On)
+                                 .SetUpdateOn(student.Update_On)
+                                 .SetGender(student.Gender)
+                                 .SetGenderType(genderType.MapToDto())
+                                 .SetAddress(address.MapToDto())
+                                 .SetEmail(email.MapToDto())
+                                 .SetPhone(phone.MapToDto())
+                                 .build();
         }
 
         protected void BtnAddClick(object sender, EventArgs e)
@@ -383,6 +401,15 @@ namespace StudentCrud
 
         int Add_Student(StudentAddParameters student)
         {
+            IRequestHandler handler = new ConcreteHandler();
+            handler = new FieldRequiredDecorator(handler);
+            handler = new MaxLengthDecorator(handler, 45);
+            var message = handler.Handle(student.First_Name);
+            if (!string.IsNullOrEmpty(message))
+            {
+                throw new ArgumentException(message);
+            }
+
             var studentService = new StudentService();
             var _student = student.MapToModel();
 
@@ -395,12 +422,6 @@ namespace StudentCrud
             {
                 throw new ArgumentException(resultTrack.Message);
             }
-        }
-
-        string validateFields()
-        {
-
-            return "";
         }
 
         int Add_Address(AddressAddParameters address)
