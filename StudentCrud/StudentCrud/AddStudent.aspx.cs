@@ -36,8 +36,12 @@ namespace StudentCrud
             phoneTypeService = new PhoneTypeService();
         }
 
-        private void Page_Load(object sender, System.EventArgs e)
+        //During load, if the current request is a postback, control properties are
+        //loaded with information recovered from view state and control state.
+        private void Page_Load(object sender, EventArgs e)
         {
+            //Gets a value that indicates whether the page is being rendered for the first time or is being loaded
+            //in response to a postback.
             if (!IsPostBack)
             {
                 LoadComboGender();
@@ -54,6 +58,8 @@ namespace StudentCrud
                     BtnAddNew.Visible = true;
                     SetValuesToParameters();
                 }
+
+                Validate();
             }
         }
 
